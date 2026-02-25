@@ -1,0 +1,8 @@
+# Request: Empty (no request fields)
+---
+# Response: PoseArray with grasp poses and a list of grasp scores
+geometry_msgs/PoseArray poses
+
+# list of grasp scores corresponding to the poses
+float32[] scores
+
