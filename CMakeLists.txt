@@ -9,13 +9,17 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 find_package(rosidl_default_generators REQUIRED)
 
 # Add the service file
 rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Grasp.msg"
   "srv/GetGrasps.srv"
-  DEPENDENCIES std_msgs geometry_msgs
+  "srv/DetectGrasps.srv"
+  "srv/MultiviewDetectGrasps.srv"
+  DEPENDENCIES std_msgs geometry_msgs sensor_msgs
 )
 
 ament_export_dependencies(rosidl_default_runtime)

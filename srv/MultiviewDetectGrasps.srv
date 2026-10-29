@@ -1,0 +1,34 @@
+# Detect grasps on several depth views of the same (static) scene.
+#
+# The views are fused into one volume (e.g. a TSDF) before detection.
+# Arrays are indexed by view: depth[i], camera_info[i], (color[i]),
+# (camera_poses[i]) belong to the same view.
+# Grasps are returned in target_frame (response.header.frame_id).
+
+sensor_msgs/Image[] depth          # 16UC1 (mm) or 32FC1 (m); header.frame_id =
+                                   # optical frame of the depth camera
+sensor_msgs/Image[] color          # optional (empty, or one per view, aligned
+                                   # to depth); not every detector uses it
+sensor_msgs/CameraInfo[] camera_info
+
+# Pose of each depth optical frame in target_frame. If empty, the server
+# looks the poses up with tf at depth[i].header.stamp.
+geometry_msgs/Pose[] camera_poses
+
+# Reference frame for fusion and output. Detectors that assume a gravity
+# aligned scene (e.g. VGN) expect z pointing up, normal to the table.
+string target_frame
+
+# Volume to reconstruct and search, in target_frame (m). If use_workspace is
+# false the server uses its configured default workspace.
+bool use_workspace
+geometry_msgs/Point workspace_min
+geometry_msgs/Point workspace_max
+
+uint32 max_grasps                  # 0 = no limit (after sorting by score)
+float32 min_score                  # 0 = server default threshold
+---
+bool success
+string message
+std_msgs/Header header             # frame_id = target_frame, stamp = latest view
+Grasp[] grasps                     # sorted by decreasing score

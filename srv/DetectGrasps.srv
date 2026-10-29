@@ -1,0 +1,25 @@
+# Detect grasps on one RGB-D view.
+#
+# The depth image must be aligned to the color image (same size and pixel
+# grid); camera_info holds the intrinsics of the color camera.
+# Grasps are returned in the optical frame of the color image
+# (response.header = color.header), as AnyGrasp produces them; the caller
+# transforms them with tf2 if needed.
+
+sensor_msgs/Image color            # rgb8 / bgr8
+sensor_msgs/Image depth            # 16UC1 (mm) or 32FC1 (m), aligned to color
+sensor_msgs/CameraInfo camera_info
+
+# Optional workspace limits in the camera frame (m); grasps outside are
+# discarded. Disabled when use_workspace is false.
+bool use_workspace
+geometry_msgs/Point workspace_min
+geometry_msgs/Point workspace_max
+
+uint32 max_grasps                  # 0 = no limit (after sorting by score)
+float32 min_score                  # 0 = no threshold
+---
+bool success
+string message
+std_msgs/Header header             # frame and stamp of the poses (= color.header)
+Grasp[] grasps                     # sorted by decreasing score
