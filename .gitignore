@@ -216,3 +216,6 @@ __marimo__/
 *.dist/
 *.lprof
 
+
+# Model weights (e.g. downloaded by Ultralytics when started from this folder)
+*.pt
